@@ -10,7 +10,7 @@ import ij.plugin.filter.*;
 public class GRDM_U4 implements PlugInFilter {
 
     protected ImagePlus imp;
-    final static String[] choices = {"Wischen", "Weiche Blende", "Chroma Key", "Extra"};
+    final static String[] choices = {"Wischen", "Weiche Blende", "Overlay","Schieb-Blende", "Chroma Key", "Extra"};
 
     public int setup(String arg, ImagePlus imp) {
         this.imp = imp;
@@ -71,8 +71,10 @@ public class GRDM_U4 implements PlugInFilter {
         String s = gd.getNextChoice();
         if (s.equals("Wischen")) methode = 1;
         if (s.equals("Weiche Blende")) methode = 2;
-        if (s.equals("Chroma Key")) methode = 3;
-        if (s.equals("Extra")) methode = 4;
+        if (s.equals("Overlay")) methode = 3;
+        if (s.equals("Schieb-Blende")) methode = 4;
+        if (s.equals("Chroma Key")) methode = 5;
+        if (s.equals("Extra")) methode = 6;
 
         // Arrays fuer die einzelnen Bilder
         int[] pixels_B;
@@ -100,26 +102,47 @@ public class GRDM_U4 implements PlugInFilter {
                     int gB = (cB & 0x00ff00) >> 8;
                     int bB = (cB & 0x0000ff);
 
-                    if (methode == 1)
-                    {
-                        if (x+1 > (z-1)*(double)width/(length-1))
+                    if (methode == 1) {
+
+                        if (y + 1 > (z - 1) * (double) height / (length - 1))
                             pixels_Erg[pos] = pixels_B[pos];
                         else
                             pixels_Erg[pos] = pixels_A[pos];
                     }
 
-					/*
-					if (methode == 2)
-					{
-					// ...
 
-					int r = ...
-					int g = ...
-					int b = ...
+					if (methode == 2) {
 
-					pixels_Erg[pos] = 0xFF000000 + ((r & 0xff) << 16) + ((g & 0xff) << 8) + ( b & 0xff);
+                        double disR = rA - rB; // -100 = 50 - 150
+                        double disG = gA - gB;
+                        double disB = bA - bB;
+
+                        int r = rB + (int) Math.round(disR * z / (double) length);
+                        int g = gB + (int) Math.round(disG * z / (double) length);
+                        int b = bB + (int) Math.round(disB * z / (double) length);
+
+                        pixels_Erg[pos] = 0xFF000000 + ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
 					}
-					*/
+
+
+                    if (methode == 3) {
+
+                        int r = (rA + rB) / 2;
+                        int g = (gA + gB) / 2;
+                        int b = (bA + bB) / 2;
+
+                        pixels_Erg[pos] = 0xFF000000 + ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
+                    }
+
+
+                    if (methode == 4) {
+
+                        if (x + 1 > (z - 1) * (double) width / (length - 1)) {
+                            pixels_Erg[pos] = pixels_B[pos - (int) ((z - 1) * (double) width / (length - 1))];
+                        } else {
+                            pixels_Erg[pos] = pixels_A[pos - (int) ((z - 1) * (double) width / (length - 1))];
+                        }
+                    }
                 }
         }
 
