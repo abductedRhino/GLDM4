@@ -143,6 +143,23 @@ public class GRDM_U4 implements PlugInFilter {
                             pixels_Erg[pos] = pixels_A[pos - (int) ((z - 1) * (double) width / (length - 1))];
                         }
                     }
+
+                    if (methode == 5) {
+                        int r;
+                        int g;
+                        int b;
+                        if (rA < 150) {
+                            r = rA;
+                            g = gA;
+                            b = bA;
+                        } else {
+                            r = rB;
+                            g = gB;
+                            b = bB;
+                        }
+
+                        pixels_Erg[pos] = 0xFF000000 + ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
+                    }
                 }
         }
 
