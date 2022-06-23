@@ -140,7 +140,8 @@ public class GRDM_U4 implements PlugInFilter {
                         if (x + 1 > (z - 1) * (double) width / (length - 1)) {
                             pixels_Erg[pos] = pixels_B[pos - (int) ((z - 1) * (double) width / (length - 1))];
                         } else {
-                            pixels_Erg[pos] = pixels_A[pos - (int) ((z - 1) * (double) width / (length - 1))];
+                            pixels_Erg[pos] = pixels_A[(pixels_A.length-1) - pos - (int)((z - 1) * (double) width / (length - 1))];
+
                         }
                     }
 
