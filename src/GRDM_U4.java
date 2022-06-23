@@ -20,7 +20,7 @@ public class GRDM_U4 implements PlugInFilter {
     public static void main(String args[]) {
         ImageJ ij = new ImageJ(); // neue ImageJ Instanz starten und anzeigen
         ij.exitWhenQuitting(true);
-        IJ.open("C:\\Users\\to0o\\GLDM4\\src\\StackB.zip");
+        IJ.open("C:\\Users\\natha\\OneDrive\\Documents\\HTW_Informatik_1_WS_2021\\IdeaProjects\\GLDM4\\src\\StackB.zip");
 
         GRDM_U4 sd = new GRDM_U4();
         sd.imp = IJ.getImage();
