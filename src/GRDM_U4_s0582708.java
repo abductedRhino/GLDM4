@@ -1,13 +1,11 @@
 import ij.*;
 import ij.io.*;
 import ij.process.*;
-import ij.*;
 import ij.gui.*;
-import java.awt.*;
 import ij.plugin.filter.*;
 
 
-public class GRDM_U4 implements PlugInFilter {
+public class GRDM_U4_s0582708 implements PlugInFilter {
 
     protected ImagePlus imp;
     final static String[] choices = {"Wischen", "Weiche Blende", "Overlay","Schieb-Blende", "Chroma Key", "Extra"};
@@ -22,7 +20,7 @@ public class GRDM_U4 implements PlugInFilter {
         ij.exitWhenQuitting(true);
         IJ.open("C:\\Users\\natha\\OneDrive\\Documents\\HTW GDM SS 2022\\Uebungen\\GLDM4\\src\\StackBMond.zip");
         IJ.open("C:\\Users\\to0o\\GLDM4\\src\\StackBMond.zip");
-        GRDM_U4 sd = new GRDM_U4();
+        GRDM_U4_s0582708 sd = new GRDM_U4_s0582708();
         sd.imp = IJ.getImage();
         ImageProcessor B_ip = sd.imp.getProcessor();
         sd.run(B_ip);
@@ -140,8 +138,7 @@ public class GRDM_U4 implements PlugInFilter {
                         if (x + 1 > (z - 1) * (double) width / (length - 1)) {
                             pixels_Erg[pos] = pixels_B[pos - (int) ((z - 1) * (double) width / (length - 1))];
                         } else {
-                            pixels_Erg[pos] = pixels_A[(pixels_A.length-1) - pos - (int)((z - 1) * (double) width / (length - 1))];
-
+                            pixels_Erg[pos] = pixels_A[pos + width - (int) ((z - 1) * (double) width / (length - 1))];
                         }
                     }
 
